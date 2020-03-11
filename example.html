@@ -22,14 +22,29 @@
             lessOrEqual,
             sqrt
         } = Homework;
-
-        const a = new AsyncArray([1, 2, 3]);
-
-        // pushPromise(a, 4).then(e => console.log(a));
-        // setPromise(a,2,99).then(e => console.log(a));
-        lengthPromise(a).then(e => console.log(e));
+        const a = new AsyncArray([1, 2, 3,4,9,5,6,2,1]);
+        const b = new AsyncArray([2, 3, 4,5,6,7,8,9,10]);
 
         setTimeout(() => a.print(), 100);
+
+        // Вариант 7 - Мой Вариант
+        // sumEven(a, (e) => console.log(e)).then(e => console.log("агась", e));
+
+        // Вариант 1
+        // maxOfArray(a, (e) => console.log(e)).then(e => console.log("агась", e));
+
+        // Вариант 2
+        // averageOfArray(a, (e) => console.log(e)).then(e => console.log("агась", e));
+
+        // Вариант 3
+        // vectorSum(a,b, e => e.print()).then(e => console.log("агась", e));
+
+        // Вариант 4
+        // areaOfTriangle(3,2,7,5,1,5, (e) => console.log(e)).then(e => console.log("агась", e));
+
+        // Вариант 6
+        // sumOdd(a, (e) => console.log(e)).then(e => console.log("агась", e));
+
     // console.log('добавление элемента');
     // a.push(4, () => { 
     //     console.log('добавление элемента выполнено');
@@ -94,15 +109,6 @@
 
     // console.log('операция МЕНЬШЕ ИЛИ РАВНО: 12 <= 19');
     // lessOrEqual(12, 19, (result) => console.log('результат операции МЕНЬШЕ ИЛИ РАВНО', result));
-    
-    
-
-
-    // function sumEven(array, cb) {
-    //     console.log(cb, array);
-    // };
-
-    // console.log(12);
 
     </script>
     <pre>Посмотрите код страницы и вывод в консоль браузера.
