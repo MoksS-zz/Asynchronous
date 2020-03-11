@@ -116,7 +116,58 @@ async function areaOfTriangle(x1, y1, x2, y2, x3, y3, cb) {
 }
 
 // Вариант 5
+async function equation(a, b, c, cb) {
+  const checkCb = await promisify(equal, cb, undefined);
 
+  const b2 = await promisify(multiply, b, b);
+  const ac = await promisify(multiply, a, c);
+  const ac4 = await promisify(multiply, ac, 4);
+
+  const sub = await promisify(subtract, b2, ac4);
+
+  const lessD = await promisify(less,sub,0);
+
+  if (lessD) {
+    if (!checkCb) {
+      cb({});
+    }
+  
+    return {};
+  }
+
+  // если дескриминант равен 0
+  const equalD = await promisify(equal, lessD, 0);
+
+  const a2 = await promisify(multiply, a, 2);
+
+  if (equalD) {
+    // давайте представим что я умножил b на -1 вашим api, спасибо :3
+    const result1 = await promisify(divide, -b, a2);
+
+    if (!checkCb) {
+      cb({result1});
+    }
+    return {result1};
+  }
+
+  const sqrtD = await promisify(sqrt, b);
+  const x1 = await promisify(add, -b, sqrtD);
+  const x2 = await promisify(subtract, -b, sqrtD);
+
+  const result1 = await promisify(divide, x1, a2);
+  const result2 = await promisify(divide, x2, a2);
+
+  if (!checkCb) {
+    cb({
+      result1,
+      result2
+    });
+  }
+  return {
+    result1,
+    result2
+  };  
+}
 
 // Вариант 6
 async function sumOdd(array, cb) {
