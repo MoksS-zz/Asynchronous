@@ -265,7 +265,6 @@ async function AsyncReduce(array, fn, initialValue = 0, cb) {
 
   while (check) {
     const element = await promisify(array.get, i);
-    console.log("jopa", cur)
     result = fn(cur, element, i, array);
     cur = result;
 
