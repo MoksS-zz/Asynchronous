@@ -97,7 +97,7 @@ async function areaOfTriangle(x1, y1, x2, y2, x3, y3, cb) {
     promisify(subtract, y1, y3),
     promisify(subtract, y2, y3)
   ]);
-  
+
   const [mulOne, mulTwo] = await Promise.all([
     promisify(multiply, xOne, yTwo),
     promisify(multiply, xTwo, yOne)
@@ -123,21 +123,20 @@ async function equation(a, b, c, cb) {
   const ac = await promisify(multiply, a, c);
   const ac4 = await promisify(multiply, ac, 4);
 
-  const sub = await promisify(subtract, b2, ac4);
+  const D = await promisify(subtract, b2, ac4);
 
-  const lessD = await promisify(less,sub,0);
+  const lessD = await promisify(less, D, 0);
 
   if (lessD) {
     if (!checkCb) {
       cb({});
     }
-  
+
     return {};
   }
 
   // если дескриминант равен 0
-  const equalD = await promisify(equal, lessD, 0);
-
+  const equalD = await promisify(equal, D, 0);
   const a2 = await promisify(multiply, a, 2);
 
   if (equalD) {
@@ -145,12 +144,12 @@ async function equation(a, b, c, cb) {
     const result1 = await promisify(divide, -b, a2);
 
     if (!checkCb) {
-      cb({result1});
+      cb({ result1 });
     }
-    return {result1};
+    return { result1 };
   }
 
-  const sqrtD = await promisify(sqrt, b);
+  const sqrtD = await promisify(sqrt, D);
   const x1 = await promisify(add, -b, sqrtD);
   const x2 = await promisify(subtract, -b, sqrtD);
 
@@ -166,7 +165,7 @@ async function equation(a, b, c, cb) {
   return {
     result1,
     result2
-  };  
+  };
 }
 
 // Вариант 6
@@ -226,3 +225,88 @@ async function sumEven(array, cb) {
   return result;
 }
 
+// Вариант 8
+
+async function AsyncMap(array, fn, cb) {
+
+  const length = await promisify(array.length);
+  // map создает новый массив, а не меняет старый, поэтому дублирую
+  const result = new AsyncArray();
+  let i = 0;
+  let check = await promisify(less, i, length);
+
+  while (check) {
+    const element = await promisify(array.get, i);
+
+    const newElemet = fn(element, i, array);
+    await promisify(result.push, newElemet);
+
+    i = await promisify(add, i, 1);
+    check = await promisify(less, i, length);
+  }
+
+  const checkCb = await promisify(equal, cb, undefined);
+  if (!checkCb) {
+    cb(result);
+  }
+
+  return result;
+}
+
+// Вариант 9
+
+async function AsyncReduce(array, fn, initialValue = 0, cb) {
+
+  const length = await promisify(array.length);
+  let result;
+  let cur = initialValue;
+  let i = 0;
+  let check = await promisify(less, i, length);
+
+  while (check) {
+    const element = await promisify(array.get, i);
+    console.log("jopa", cur)
+    result = fn(cur, element, i, array);
+    cur = result;
+
+    i = await promisify(add, i, 1);
+    check = await promisify(less, i, length);
+  }
+
+  const checkCb = await promisify(equal, cb, undefined);
+  if (!checkCb) {
+    cb(result);
+  }
+
+  return result;
+}
+
+
+// Вариант 10
+
+async function AsyncFilter(array, fn, cb) {
+  const length = await promisify(array.length);
+  const result = new AsyncArray();
+  let i = 0;
+  let check = await promisify(less, i, length);
+
+  while (check) {
+    const element = await promisify(array.get, i);
+
+    const filter = fn(element, i, array);
+
+    if (filter) {
+      await promisify(result.push, element);
+    }
+
+    i = await promisify(add, i, 1);
+    check = await promisify(less, i, length);
+  }
+
+  const checkCb = await promisify(equal, cb, undefined);
+  if (!checkCb) {
+    cb(result);
+  }
+
+  return result;
+}
